@@ -20,4 +20,5 @@ const deleteEntries = id => {
   return axios.delete(`${baseUrl}/${id}`);
 };
 
-export default { getAll, create, deleteEntries, updateEntries };
+const services = { getAll, create, deleteEntries, updateEntries };
+export default services;

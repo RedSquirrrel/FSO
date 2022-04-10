@@ -1,0 +1,25 @@
+.error {
+  position: absolute;
+  color: red;
+  background: rgb(238, 130, 130);
+  border: 1px solid rgb(199, 199, 199);
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.success {
+  position: absolute;
+  color: rgb(69, 138, 48);
+  background: rgb(168, 250, 129);
+  border: 1px solid rgb(199, 198, 198);
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.filter {
+  margin-top: 5rem;
+}
