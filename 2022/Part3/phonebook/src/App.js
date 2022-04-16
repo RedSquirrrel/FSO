@@ -79,7 +79,10 @@ const App = () => {
           }, 5000);
         })
         .catch(error => {
-          console.log(error);
+          setNotification({ type: 'error', text: error.response.data.error });
+          setTimeout(() => {
+            setNotification({ type: null, text: null });
+          }, 5000);
         });
       setNewName('');
       setNewNumber('');
