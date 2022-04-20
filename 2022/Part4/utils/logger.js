@@ -1,9 +1,13 @@
 const logInfo = (...params) => {
-  console.log(...params);
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(...params);
+  }
 };
 
 const logError = (...params) => {
-  console.log(...params);
+  if (process.env.NODE_ENV !== 'test') {
+    console.log(...params);
+  }
 };
 
 module.exports = { logInfo, logError };
