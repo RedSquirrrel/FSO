@@ -62,4 +62,12 @@ const noTitleAndUrl = {
   likes: 7,
 };
 
-module.exports = { initialBlogs, blogsInDB, newBlogWithNoLikes, noTitleAndUrl, aNewBlog };
+const nonExistingBlog = async () => {
+  const blog = new Blog({ title: 'React patterns', author: 'Michael Chan', url: 'https://reactpatterns.com/', likes: 7 });
+  await blog.save();
+  await blog.remove();
+
+  return blog._id.toString();
+};
+
+module.exports = { initialBlogs, blogsInDB, newBlogWithNoLikes, noTitleAndUrl, aNewBlog, nonExistingBlog };
