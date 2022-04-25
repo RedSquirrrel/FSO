@@ -1,4 +1,5 @@
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
 const initialBlogs = [
   {
@@ -49,6 +50,7 @@ const aNewBlog = {
   author: 'Kyle Simpson',
   url: 'https://github.com/getify/You-Dont-Know-JS/blob/1st-ed/async%20%26%20performance/ch3.md',
   likes: 7,
+  // user: [],
 };
 
 const newBlogWithNoLikes = {
@@ -70,4 +72,15 @@ const nonExistingBlog = async () => {
   return blog._id.toString();
 };
 
-module.exports = { initialBlogs, blogsInDB, newBlogWithNoLikes, noTitleAndUrl, aNewBlog, nonExistingBlog };
+const initialUser = {
+  username: 'root',
+  name: 'test',
+  password: 'secret',
+};
+
+const usersInDB = async () => {
+  const users = await User.find({});
+  return users.map(user => user.toJSON());
+};
+
+module.exports = { initialBlogs, blogsInDB, newBlogWithNoLikes, noTitleAndUrl, aNewBlog, nonExistingBlog, usersInDB, initialUser };
