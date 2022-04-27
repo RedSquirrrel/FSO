@@ -9,6 +9,8 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [notification, setNotification] = useState({ type: '', message: '' });
 
+  const sortedBlog = blogs.sort((a, b) => b.likes - a.likes);
+
   useEffect(() => {
     blogService.getAll().then(blogs => setBlogs(blogs));
   }, []);
@@ -29,7 +31,7 @@ const App = () => {
       {user === null ? (
         <LoginForm user={user} setUser={setUser} setNotification={setNotification} />
       ) : (
-        <BlogList blogs={blogs} user={user} setUser={setUser} setBlogs={setBlogs} setNotification={setNotification} />
+        <BlogList blogs={sortedBlog} user={user} setUser={setUser} setBlogs={setBlogs} setNotification={setNotification} />
       )}
     </div>
   );

@@ -23,3 +23,13 @@
 .mg {
   margin-bottom: 5rem;
 }
+
+.remove_btn {
+  background-color: rgb(218 37 37);
+  color: #fff;
+}
+
+.flex {
+  display: flex;
+  justify-content: space-between;
+}

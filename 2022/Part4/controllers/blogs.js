@@ -2,7 +2,7 @@ const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
 const middleware = require('../utils/middleware');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
@@ -34,7 +34,8 @@ blogsRouter.post('/', middleware.tokenExtractor, middleware.userExtractor, async
     author: body.author,
     url: body.url,
     likes: body.likes || 0,
-    user: userFromDB._id,
+    // user: userFromDB._id,
+    user: userFromDB,
   });
 
   const result = await blog.save();
@@ -62,14 +63,11 @@ blogsRouter.delete('/:id', middleware.tokenExtractor, middleware.userExtractor, 
 blogsRouter.put('/:id', async (request, response) => {
   const body = request.body;
 
-  const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
-  };
+  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, body, { new: true, runValidators: true, context: 'query' }).populate(
+    'user',
+    { username: 1, name: 1 }
+  );
 
-  const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true });
   if (updatedBlog) {
     response.json(updatedBlog);
   } else {

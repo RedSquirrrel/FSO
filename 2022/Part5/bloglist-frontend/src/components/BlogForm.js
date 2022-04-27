@@ -1,39 +1,21 @@
 import { useState } from 'react';
 
-import blogsServices from '../services/blogs';
-
-const BlogForm = ({ blogs, setBlog, user, setNotification }) => {
+const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
-  const addBlog = async e => {
+  const addBlog = e => {
     e.preventDefault();
+    createBlog({
+      title,
+      author,
+      url,
+    });
 
-    try {
-      blogsServices.setToken(user.token);
-      const blogObject = {
-        title,
-        author,
-        url,
-      };
-
-      const returnedObj = await blogsServices.create(blogObject);
-      console.log(returnedObj);
-      setBlog(blogs.concat(returnedObj));
-      setTitle('');
-      setAuthor('');
-      setUrl('');
-      setNotification({ type: 'success', message: `A new blog "${returnedObj.title}" by ${returnedObj.author} added` });
-      setTimeout(() => {
-        setNotification(null);
-      }, 2000);
-    } catch (error) {
-      setNotification({ type: 'error', message: error.response.data.error });
-      setTimeout(() => {
-        setNotification(null);
-      }, 2000);
-    }
+    setTitle('');
+    setAuthor('');
+    setUrl('');
   };
 
   return (
