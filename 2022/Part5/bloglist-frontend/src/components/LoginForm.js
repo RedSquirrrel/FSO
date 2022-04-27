@@ -3,7 +3,7 @@ import { useState } from 'react';
 import loginServices from '../services/login';
 import blogsServices from '../services/blogs';
 
-const LoginForm = ({ user, setUser, notification, setNotification }) => {
+const LoginForm = ({ setUser, setNotification }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
