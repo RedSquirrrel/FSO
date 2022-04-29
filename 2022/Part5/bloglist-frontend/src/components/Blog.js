@@ -17,17 +17,21 @@ const Blog = ({ blog, updateLike, user, removeBlog }) => {
   };
 
   return (
-    <div style={blogStyle}>
+    <div id='blogs' style={blogStyle}>
       <div className='flex'>
         {blog.title} by {blog.author}
-        <button onClick={toggle}>{label}</button>
+        <button id='view-btn' onClick={toggle}>
+          {label}
+        </button>
       </div>
       {visible ? (
         <div>
           <div>Url: {blog.url}</div>
           <div>
             Likes: {blog.likes}
-            <button onClick={updateLike}>Like</button>
+            <button className='like-btn' onClick={updateLike}>
+              Like
+            </button>
           </div>
           <div>
             {blog.user.username === user.username ? (

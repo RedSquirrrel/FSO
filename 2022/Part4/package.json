@@ -5,7 +5,8 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node index.js",
     "test": "cross-env NODE_ENV=test jest --verbose --runInBand --forceExit",
-    "dev": "cross-env NODE_ENV=develompent nodemon index.js"
+    "dev": "cross-env NODE_ENV=develompent nodemon index.js",
+    "start:test": "cross-env NODE_ENV=test node index.js"
   },
   "author": "Anette",
   "license": "MIT",
@@ -29,3 +30,4 @@
     "testEnvironment": "node"
   }
 }
+
