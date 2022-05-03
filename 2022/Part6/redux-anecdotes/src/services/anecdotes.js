@@ -12,6 +12,12 @@ const createNew = async content => {
   return response.data;
 };
 
-const services = { getAll, createNew };
+const update = async anec => {
+  const newA = { ...anec, votes: anec.votes + 1 };
+  const response = await axios.put(`${baseUrl}/${anec.id}`, newA);
+  return response.data;
+};
+
+const services = { getAll, createNew, update };
 
 export default services;
