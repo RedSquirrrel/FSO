@@ -41,7 +41,7 @@ export const updateVote = anec => {
   return async dispatch => {
     const updated = await services.update(anec);
     dispatch(voting(updated));
-    dispatch(setNotification(`You voted: "${anec.content}"`, 10));
+    dispatch(setNotification(`You voted: "${anec.content}"`, 5));
   };
 };
 
