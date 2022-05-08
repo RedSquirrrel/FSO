@@ -4,11 +4,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteBlog, updateBlog } from '../reducers/blogReducer';
 import blogsServices from '../services/blogs';
 
-const Blog = ({ blog, user }) => {
+const Blog = ({ blog }) => {
   const [visible, setVisible] = useState(false);
   const label = !visible ? 'View' : 'Hide';
   const dispatch = useDispatch();
+
   const blogs = useSelector((state) => state.blogs);
+  const loggedInUser = useSelector((state) => state.authUser);
 
   const blogStyle = {
     paddingTop: 10,
@@ -23,7 +25,7 @@ const Blog = ({ blog, user }) => {
   };
 
   const removeBlog = async (id) => {
-    blogsServices.setToken(user.token);
+    blogsServices.setToken(loggedInUser.token);
 
     const findBlog = blogs.find((b) => b.id === id);
     if (window.confirm(`Remove blog "${blog.title}" by "${blog.author}"?`)) {
@@ -54,7 +56,7 @@ const Blog = ({ blog, user }) => {
             </button>
           </div>
           <div>
-            {blog.user.username === user.username ? (
+            {blog.user.username === loggedInUser.username ? (
               <button className='remove_btn' onClick={() => removeBlog(blog.id)}>
                 Remove
               </button>

@@ -1,33 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route, useMatch } from 'react-router-dom';
+
 import BlogList from './components/BlogList';
-import blogService from './services/blogs';
 import LoginForm from './components/LoginForm';
 import Notification from './components/Notification';
 
 import { getAllBlogs } from './reducers/blogReducer';
-import { useDispatch } from 'react-redux';
+import { initializeUsers } from './reducers/userReducer';
+import { initializeAuthUser } from './reducers/authReducer';
+import Users from './components/Users';
+import User from './components/User';
+import Navigation from './components/Navigation';
 
 const App = () => {
   const dispatch = useDispatch();
-  const [user, setUser] = useState(null);
+  const loggedInUser = useSelector((state) => state.authUser);
+  const users = useSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(getAllBlogs());
+    dispatch(initializeUsers());
+    dispatch(initializeAuthUser());
   }, [dispatch]);
 
-  useEffect(() => {
-    const loggedUser = window.localStorage.getItem('blogUser');
-    if (loggedUser) {
-      const parseUser = JSON.parse(loggedUser);
-      setUser(parseUser);
-      blogService.setToken(loggedUser.token);
-    }
-  }, []);
+  const matchUser = useMatch('/users/:id');
+  const user = matchUser ? users.find((user) => user.id === matchUser.params.id) : null;
 
   return (
     <div>
       <Notification />
-      {user === null ? <LoginForm user={user} setUser={setUser} /> : <BlogList user={user} setUser={setUser} />}
+      <Navigation />
+      <Routes>
+        <Route path='/users/:id' element={<User user={user} />} />
+        <Route path='/users' element={<Users />} />
+        <Route path='/' element={loggedInUser === null ? <LoginForm /> : <BlogList />} />
+      </Routes>
     </div>
   );
 };

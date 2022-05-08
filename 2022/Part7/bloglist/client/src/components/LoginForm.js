@@ -1,29 +1,15 @@
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { showNotification } from '../reducers/notificationReducer';
 
-import loginServices from '../services/login';
-import blogsServices from '../services/blogs';
+import { logInUser } from '../reducers/authReducer';
 
-const LoginForm = ({ setUser }) => {
+const LoginForm = () => {
   const dispatch = useDispatch();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleLogin = async e => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    try {
-      const result = await loginServices.login({ username, password });
-      window.localStorage.setItem('blogUser', JSON.stringify(result));
-      blogsServices.setToken(result.token);
-      setUser(result);
-      setUsername('');
-      setPassword('');
-      dispatch(showNotification('success', `Welcome ${result.name}`, 5));
-    } catch (error) {
-      console.log(error);
-      dispatch(showNotification('error', 'Wrong username or password', 5));
-    }
+    const username = e.target.username.value;
+    const password = e.target.password.value;
+    dispatch(logInUser({ username, password }));
   };
 
   return (
@@ -31,11 +17,11 @@ const LoginForm = ({ setUser }) => {
       <h1 className='mg'>Log in to application</h1>
       <form onSubmit={handleLogin}>
         <div>
-          Username <input id='username' type='text' value={username} name='Username' onChange={({ target }) => setUsername(target.value)} />
+          Username <input id='username' type='text' name='username' />
         </div>
         <div>
           Password
-          <input id='password' type='password' value={password} name='Password' onChange={({ target }) => setPassword(target.value)} />
+          <input id='password' type='password' name='password' />
         </div>
         <button id='login-btn' type='submit'>
           Login
