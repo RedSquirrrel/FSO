@@ -1,16 +1,17 @@
-import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { deleteBlog, updateBlog } from '../reducers/blogReducer';
 import blogsServices from '../services/blogs';
 
 const Blog = ({ blog }) => {
-  const [visible, setVisible] = useState(false);
-  const label = !visible ? 'View' : 'Hide';
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const blogs = useSelector((state) => state.blogs);
   const loggedInUser = useSelector((state) => state.authUser);
+
+  if (!blog) return;
 
   const blogStyle = {
     paddingTop: 10,
@@ -20,16 +21,13 @@ const Blog = ({ blog }) => {
     marginTop: 15,
   };
 
-  const toggle = () => {
-    setVisible(!visible);
-  };
-
   const removeBlog = async (id) => {
     blogsServices.setToken(loggedInUser.token);
 
     const findBlog = blogs.find((b) => b.id === id);
     if (window.confirm(`Remove blog "${blog.title}" by "${blog.author}"?`)) {
       dispatch(deleteBlog(findBlog));
+      navigate('/');
     }
   };
 
@@ -40,31 +38,24 @@ const Blog = ({ blog }) => {
 
   return (
     <div id='blogs' style={blogStyle}>
-      <div className='flex'>
+      <h1>
         {blog.title} by {blog.author}
-        <button id='view-btn' onClick={toggle}>
-          {label}
+      </h1>
+      <div>Url: {blog.url}</div>
+      <div>
+        Likes: {blog.likes}
+        <button className='like-btn' onClick={() => updateLike(blog.id, blog)}>
+          Like
         </button>
       </div>
-      {visible ? (
-        <div>
-          <div>Url: {blog.url}</div>
-          <div>
-            Likes: {blog.likes}
-            <button className='like-btn' onClick={() => updateLike(blog.id, blog)}>
-              Like
-            </button>
-          </div>
-          <div>
-            {blog.user.username === loggedInUser.username ? (
-              <button className='remove_btn' onClick={() => removeBlog(blog.id)}>
-                Remove
-              </button>
-            ) : null}
-          </div>
-          <div>{blog.user.username}</div>
-        </div>
-      ) : null}
+      <div>Added by: {blog.user.username}</div>
+      <div>
+        {blog.user.username === loggedInUser.username ? (
+          <button className='remove_btn' onClick={() => removeBlog(blog.id)}>
+            Remove
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 };

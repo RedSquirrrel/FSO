@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import Blog from './Blog';
 import BlogForm from './BlogForm';
 import Togglable from './Togglable';
 
@@ -19,7 +19,9 @@ const BlogList = () => {
         <BlogForm user={user} />
       </Togglable>
       {sortedBlog.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <div key={blog.id}>
+          <Link to={`/blogs/${blog.id}`}>{blog.title} </Link>
+        </div>
       ))}
     </div>
   );
