@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Routes, Route, useMatch } from 'react-router-dom';
 
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Grid';
+
 import Notification from './components/Notification';
 import Navigation from './components/Navigation';
 import LoginForm from './components/LoginForm';
@@ -34,14 +37,27 @@ const App = () => {
 
   return (
     <div>
-      <Notification />
-      <Navigation />
-      <Routes>
-        <Route path='/users/:id' element={<User user={user} />} />
-        <Route path='/blogs/:id' element={<Blog blog={blog} />} />
-        <Route path='/users' element={<Users />} />
-        <Route path='/' element={loggedInUser === null ? <LoginForm /> : <BlogList />} />
-      </Routes>
+      <Container>
+        <Notification />
+        <Navigation />
+        <Routes>
+          <Route path='/users/:id' element={<User user={user} />} />
+          <Route path='/blogs/:id' element={<Blog blog={blog} />} />
+          <Route path='/users' element={<Users />} />
+          <Route
+            path='/'
+            element={
+              loggedInUser === null ? (
+                <Grid container spacing={0} direction='column' alignItems='center' justifyContent='center' style={{ minHeight: '100vh' }}>
+                  <LoginForm />
+                </Grid>
+              ) : (
+                <BlogList />
+              )
+            }
+          />
+        </Routes>
+      </Container>
     </div>
   );
 };

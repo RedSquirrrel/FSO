@@ -1,4 +1,7 @@
 import { useDispatch } from 'react-redux';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 import { logInUser } from '../reducers/authReducer';
 
@@ -13,19 +16,20 @@ const LoginForm = () => {
   };
 
   return (
-    <div>
-      <h1 className='mg'>Log in to application</h1>
+    <div style={{ width: '500px' }}>
+      <Typography align='center'>Log in to application</Typography>
       <form onSubmit={handleLogin}>
         <div>
-          Username <input id='username' type='text' name='username' />
+          <TextField sx={{ mb: 3 }} label='Username' variant='standard' type='text' name='username' fullWidth />
         </div>
         <div>
-          Password
-          <input id='password' type='password' name='password' />
+          <TextField sx={{ mb: 3 }} label='Passwors' variant='standard' type='password' name='password' fullWidth />
         </div>
-        <button id='login-btn' type='submit'>
-          Login
-        </button>
+        <div>
+          <Button sx={{ py: 1 }} variant='outlined' type='submit' fullWidth>
+            Login
+          </Button>
+        </div>
       </form>
     </div>
   );
