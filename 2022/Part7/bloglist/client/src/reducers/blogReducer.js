@@ -21,10 +21,16 @@ const blogSlice = createSlice({
       const changedBlog = action.payload;
       return state.map((blog) => (blog.id !== id ? blog : { ...changedBlog }));
     },
+    addComment(state, action) {
+      const id = action.payload.id;
+      const findBlog = state.find((c) => c.id === id);
+      const updatedBlogWithComment = { ...findBlog, comments: action.payload.comments };
+      return state.map((b) => (b.id !== id ? b : updatedBlogWithComment));
+    },
   },
 });
 
-export const { initializeBlogs, addNew, delBlog, addLike } = blogSlice.actions;
+export const { initializeBlogs, addNew, delBlog, addLike, addComment } = blogSlice.actions;
 
 export const getAllBlogs = () => {
   return async (dispatch) => {
@@ -34,10 +40,10 @@ export const getAllBlogs = () => {
 };
 
 export const createNewBlog = (blogObj) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     try {
-      // blogServices.setToken(user.token);
-
+      const currentState = getState();
+      blogServices.setToken(currentState.authUser.token);
       const returnedObj = await blogServices.create(blogObj);
       dispatch(addNew(returnedObj));
       dispatch(showNotification('success', `A new blog "${returnedObj.title}" by ${returnedObj.author} added`, 5));
@@ -48,7 +54,9 @@ export const createNewBlog = (blogObj) => {
 };
 
 export const deleteBlog = (blog) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
+    const currentState = getState();
+    blogServices.setToken(currentState.authUser.token);
     try {
       await blogServices.removeBlogFromDb(blog.id);
       dispatch(delBlog(blog.id));
@@ -65,6 +73,17 @@ export const updateBlog = (id, blObj) => {
     try {
       const updatedBlog = await blogServices.update(id, blObj);
       dispatch(addLike(updatedBlog));
+    } catch (error) {
+      dispatch(showNotification('error', error.response.data.error));
+    }
+  };
+};
+
+export const newComment = (id, blog, comment) => {
+  return async (dispatch) => {
+    try {
+      const upd = await blogServices.createComment(id, blog, comment);
+      dispatch(addComment(upd));
     } catch (error) {
       dispatch(showNotification('error', error.response.data.error));
     }

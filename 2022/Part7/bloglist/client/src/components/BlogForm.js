@@ -1,11 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { createNewBlog } from '../reducers/blogReducer';
-import blogServices from '../services/blogs';
 
 const BlogForm = () => {
   const dispatch = useDispatch();
-  const loggedInUser = useSelector((state) => state.authUser);
 
   const addBlog = (e) => {
     e.preventDefault();
@@ -13,7 +11,6 @@ const BlogForm = () => {
     const author = e.target.author.value;
     const url = e.target.url.value;
 
-    blogServices.setToken(loggedInUser.token);
     dispatch(createNewBlog({ title, author, url }));
 
     e.target.title.value = '';

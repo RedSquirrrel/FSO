@@ -1,8 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteBlog, updateBlog } from '../reducers/blogReducer';
-import blogsServices from '../services/blogs';
+import { deleteBlog, updateBlog, newComment } from '../reducers/blogReducer';
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch();
@@ -22,8 +21,6 @@ const Blog = ({ blog }) => {
   };
 
   const removeBlog = async (id) => {
-    blogsServices.setToken(loggedInUser.token);
-
     const findBlog = blogs.find((b) => b.id === id);
     if (window.confirm(`Remove blog "${blog.title}" by "${blog.author}"?`)) {
       dispatch(deleteBlog(findBlog));
@@ -34,6 +31,12 @@ const Blog = ({ blog }) => {
   const updateLike = async (id, blogLike) => {
     const newBlog = { ...blogLike, likes: blogLike.likes + 1 };
     dispatch(updateBlog(id, newBlog));
+  };
+
+  const handleComment = (e) => {
+    e.preventDefault();
+    const comment = e.target.comment.value;
+    dispatch(newComment(blog.id, blog, comment));
   };
 
   return (
@@ -55,6 +58,18 @@ const Blog = ({ blog }) => {
             Remove
           </button>
         ) : null}
+      </div>
+      <div>
+        <h3>Comments</h3>
+        <form onSubmit={handleComment}>
+          <input type='text' name='comment' />
+          <button>Add a comment</button>
+        </form>
+        <ul>
+          {blog.comments.map((comment, index) => (
+            <li key={index}>{comment}</li>
+          ))}
+        </ul>
       </div>
     </div>
   );
