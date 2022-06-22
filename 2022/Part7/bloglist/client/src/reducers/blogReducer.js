@@ -62,6 +62,9 @@ export const deleteBlog = (blog) => {
       dispatch(delBlog(blog.id));
       dispatch(showNotification('success', `Successfully removed "${blog.title}" by "${blog.author}"`, 5));
     } catch (error) {
+      if (currentState.authUser.username !== blog.user.username) {
+        dispatch(showNotification('error', ` ${error.response.data.error} `, 5));
+      }
       dispatch(showNotification('error', ` ${error.response.data.error} "${blog.title}" by "${blog.author}"`, 5));
       dispatch(delBlog(blog.id));
     }
@@ -74,7 +77,7 @@ export const updateBlog = (id, blObj) => {
       const updatedBlog = await blogServices.update(id, blObj);
       dispatch(addLike(updatedBlog));
     } catch (error) {
-      dispatch(showNotification('error', error.response.data.error));
+      dispatch(showNotification('error', error.response.data.error, 5));
     }
   };
 };

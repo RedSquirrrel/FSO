@@ -29,6 +29,7 @@ const update = async (id, updatedObj) => {
     likes: updatedObj.likes,
   };
   const response = await axios.put(`${baseUrl}/${id}`, blog);
+  console.log('RESPONSE', response.data);
   return response.data;
 };
 

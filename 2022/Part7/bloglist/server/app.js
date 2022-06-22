@@ -20,6 +20,7 @@ mongoose
   .catch(error => {
     logError('Error connecting to MongoDB:', error.message);
   });
+console.log(process.env.NODE_ENV);
 
 app.use(cors());
 app.use(express.json());

@@ -29,8 +29,12 @@ const Blog = ({ blog }) => {
   };
 
   const updateLike = async (id, blogLike) => {
-    const newBlog = { ...blogLike, likes: blogLike.likes + 1 };
-    dispatch(updateBlog(id, newBlog));
+    try {
+      const newBlog = { ...blogLike, likes: blogLike.likes + 1 };
+      dispatch(updateBlog(id, newBlog));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleComment = (e) => {
