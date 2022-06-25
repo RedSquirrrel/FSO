@@ -26,25 +26,30 @@ const parseArgs = (args: Array<string>): ExerciseValues => {
   }
 };
 
-const calculateExercises = (dailyExerciseHours: Array<number>, target: number): Result => {
+
+export const calculateExercises = (dailyExerciseHours: Array<number>, target: number): Result => {
   let numberOfDays: number = dailyExerciseHours.length;
   let numberOfTrainingDays: number[] = dailyExerciseHours.filter(el => el);
   const sum = numberOfTrainingDays.reduce((acc, el) => acc + el, 0);
   let averageTime: number = sum / dailyExerciseHours.length;
   let ifSuccess: boolean = averageTime >= target;
-  let ratingNumber: number;
-  let ratingDescription: string;
+  let ratingNumber: number = 0;
+  let ratingDescription: string = '';
 
   if (target === 1) {
-    ratingNumber = 1;
+    ratingNumber = 0;
     ratingDescription = 'You should work more';
   } else if (target === 2) {
     ratingNumber = 2;
     ratingDescription = 'Not too bad but could be better';
+  } else if (target === 2.5) {
+    ratingNumber = 1;
+    ratingDescription = 'Bad';
   } else if (target === 3) {
     ratingNumber = 3;
     ratingDescription = 'Excellent';
   }
+
   const obj = {
     periodLength: numberOfDays,
     trainingDays: numberOfTrainingDays.length,
@@ -56,15 +61,7 @@ const calculateExercises = (dailyExerciseHours: Array<number>, target: number): 
   };
 
   console.log(obj);
-  return {
-    periodLength: numberOfDays,
-    trainingDays: numberOfTrainingDays.length,
-    success: ifSuccess,
-    rating: ratingNumber,
-    ratingDescription: ratingDescription,
-    target: target,
-    average: averageTime,
-  };
+  return obj;
 };
 
 try {
